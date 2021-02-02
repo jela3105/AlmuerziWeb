@@ -31,3 +31,6 @@ ul {
   margin: 15px;
   margin-left: 40px;
 }
+#submit:disabled {
+  background-color: #ccc;  
+}
