@@ -1,4 +1,25 @@
 window.onload = () => {
+  const orderForm = document.getElementById("order");
+  orderForm.onsubmit = (event) => {
+    event.preventDefault();
+    const mealsIdValue = document.getElementById("meals-id").value;
+    if (!mealsIdValue) {
+      alert("You must select a meal");
+      return;
+    }
+    const order = {
+      meal_id: mealsIdValue,
+      user_id: "Chanchito feliz",
+    };
+    fetch("https://serverless.jela3105.vercel.app/api/orders", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/josn",
+      },
+      body: JSON.stringify(order),
+    }).then((x) => console.log(x));
+  };
+
   fetch("https://serverless.jela3105.vercel.app/api/meals")
     .then((response) => response.json())
     .then((data) => {
