@@ -1,3 +1,5 @@
+let measlState = [];
+
 window.onload = () => {
   handleForm();
   getInitialData();
@@ -7,6 +9,8 @@ const handleForm = () => {
   const orderForm = document.getElementById("order");
   orderForm.onsubmit = (event) => {
     event.preventDefault();
+    const submit = document.getElementById("submit");
+    submit.setAttribute("disabled", true);
     const mealsIdValue = document.getElementById("meals-id").value;
     if (!mealsIdValue) {
       alert("You must select a meal");
@@ -22,7 +26,14 @@ const handleForm = () => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(order),
-    }).then((x) => console.log(x));
+    })
+      .then((x) => x.json())
+      .then((response) => {
+        const renderedOrder = renderOrder(response, mealsState);
+        const ordersList = document.getElementById("orders-list");
+        ordersList.appendChild(renderedOrder);
+        submit.removeAttribute("disabled");
+      });
   };
 };
 
@@ -30,6 +41,7 @@ const getInitialData = () => {
   fetch("https://serverless.jela3105.vercel.app/api/meals")
     .then((response) => response.json())
     .then((mealsData) => {
+      mealsState = mealsData;
       const mealsList = document.getElementById("meals-list");
       const submit = document.getElementById("submit");
       const generatedMealsList = mealsData.map(renderMeal);
