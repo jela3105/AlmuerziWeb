@@ -19,7 +19,7 @@ const handleForm = () => {
     fetch("https://serverless.jela3105.vercel.app/api/orders", {
       method: "POST",
       headers: {
-        "Content-Type": "application/josn",
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(order),
     }).then((x) => console.log(x));
@@ -29,22 +29,25 @@ const handleForm = () => {
 const getInitialData = () => {
   fetch("https://serverless.jela3105.vercel.app/api/meals")
     .then((response) => response.json())
-    .then((data) => {
+    .then((mealsData) => {
       const mealsList = document.getElementById("meals-list");
       const submit = document.getElementById("submit");
-      const itemList = data.map(renderMeal);
+      const generatedMealsList = mealsData.map(renderMeal);
       mealsList.removeChild(mealsList.firstElementChild); //remove loading text
-      itemList.forEach((element) => mealsList.appendChild(element));
+      generatedMealsList.forEach((meal) => mealsList.appendChild(meal));
       submit.removeAttribute("disabled");
-      fetch("https://serverless.jela3105.vercel.app/api/meals")
+      fetch("https://serverless.jela3105.vercel.app/api/orders")
         .then((response) => response.json())
         .then((ordersData) => {
           const ordersList = document.getElementById("orders-list");
-          const listOrders = ordersData.map((orderData) =>
-            renderOrder(orderData, data)
+          const generatedOrdersList = ordersData.map((orderData) =>
+            renderOrder(orderData, mealsData)
           );
+          console.log(generatedOrdersList);
           ordersList.removeChild(ordersList.firstElementChild);
-          listOrders.forEach((element) => ordersList.appendChild(element));
+          generatedOrdersList.forEach((element) =>
+            ordersList.appendChild(element)
+          );
         });
     });
 };
@@ -64,8 +67,10 @@ const renderMeal = (item) => {
 };
 
 const renderOrder = (order, meals) => {
-  const meal = meals.find((meal) => meal._id === order.meal_id);
-  const element = stringToHTML(`<li data_id="${order._id}">${meal}</li>`);
+  const meal = meals.find((x) => x._id === order.meal_id);
+  const element = stringToHTML(
+    `<li data_id="${order._id}">${meal.name} - ${order.user_id}</li>`
+  );
   return element;
 };
 
