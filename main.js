@@ -38,7 +38,14 @@ const getInitialData = () => {
       submit.removeAttribute("disabled");
       fetch("https://serverless.jela3105.vercel.app/api/meals")
         .then((response) => response.json())
-        .then((ordersData) => {});
+        .then((ordersData) => {
+          const ordersList = document.getElementById("orders-list");
+          const listOrders = ordersData.map((orderData) =>
+            renderOrder(orderData, data)
+          );
+          ordersList.removeChild(ordersList.firstElementChild);
+          listOrders.forEach((element) => ordersList.appendChild(element));
+        });
     });
 };
 
@@ -56,7 +63,11 @@ const renderMeal = (item) => {
   return element;
 };
 
-const renderOrder = (order, meals) => {};
+const renderOrder = (order, meals) => {
+  const meal = meals.find((meal) => meal._id === order.meal_id);
+  const element = stringToHTML(`<li data_id="${order._id}">${meal}</li>`);
+  return element;
+};
 
 const stringToHTML = (stringText) => {
   const parser = new DOMParser();
