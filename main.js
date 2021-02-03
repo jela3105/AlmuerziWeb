@@ -1,4 +1,9 @@
 window.onload = () => {
+  handleForm();
+  getInitialData();
+};
+
+const handleForm = () => {
   const orderForm = document.getElementById("order");
   orderForm.onsubmit = (event) => {
     event.preventDefault();
@@ -19,22 +24,25 @@ window.onload = () => {
       body: JSON.stringify(order),
     }).then((x) => console.log(x));
   };
+};
 
+const getInitialData = () => {
   fetch("https://serverless.jela3105.vercel.app/api/meals")
     .then((response) => response.json())
     .then((data) => {
       const mealsList = document.getElementById("meals-list");
       const submit = document.getElementById("submit");
-      const itemList = data.map(renderItem);
-
+      const itemList = data.map(renderMeal);
       mealsList.removeChild(mealsList.firstElementChild); //remove loading text
       itemList.forEach((element) => mealsList.appendChild(element));
-
       submit.removeAttribute("disabled");
+      fetch("https://serverless.jela3105.vercel.app/api/meals")
+        .then((response) => response.json())
+        .then((ordersData) => {});
     });
 };
 
-const renderItem = (item) => {
+const renderMeal = (item) => {
   const element = stringToHTML(`<li data_id="${item._id}">${item.name}</li>`);
   element.addEventListener("click", () => {
     const mealsList = document.getElementById("meals-list");
@@ -47,6 +55,8 @@ const renderItem = (item) => {
   });
   return element;
 };
+
+const renderOrder = (order, meals) => {};
 
 const stringToHTML = (stringText) => {
   const parser = new DOMParser();
