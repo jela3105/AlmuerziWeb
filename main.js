@@ -1,8 +1,9 @@
 let measlState = [];
+let route = "login"; //login, register, orders
 
 window.onload = () => {
-  handleForm();
-  getInitialData();
+  //handleForm();
+  //getInitialData();
 };
 
 const handleForm = () => {
