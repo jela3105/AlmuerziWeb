@@ -10,6 +10,8 @@ body div {
  margin-top: 0px;
 }
 
+
+
 ul {
   list-style-type: none;
 }
@@ -29,6 +31,11 @@ form input {
   font-size: 14px ;
 }
 
+.form-title {
+  text-align: center;
+  font-size: 24px;
+}
+
 .selected {
   
   background-color: #eee;
@@ -39,6 +46,7 @@ form input {
   margin: 0 auto;
   margin-top: 100px;
   padding: 15px;
+  padding-bottom: 30px;
 }
 
 .btn {
