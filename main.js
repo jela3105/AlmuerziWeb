@@ -4,6 +4,16 @@ let route = "login"; //login, register, orders
 window.onload = () => {
   //handleForm();
   //getInitialData();
+  fetch("https://serverless.jela3105.vercel.app/api/auth/register", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      email: "chanchido@feliz.com",
+      password: "chanchitohappy",
+    }),
+  });
 };
 
 const handleForm = () => {
